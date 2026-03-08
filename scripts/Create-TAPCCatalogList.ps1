@@ -1,4 +1,4 @@
-# v08Mar26.2.0
+# v08Mar26.2.1
 # Create-TAPCCatalogList.ps1
 # Creates the TAPC Solution Catalog list on a SharePoint site.
 # Requires: PnP PowerShell module, Site Collection Admin access.
@@ -52,16 +52,18 @@ try {
 
 #region List Creation *#
 
-$listName = "TAPC Solution Catalog"
+$listInternalName = "TAPCCatalog"
+$listDisplayName  = "TAPC Solution Catalog"
 
-$existing = Get-PnPList -Identity $listName -ErrorAction SilentlyContinue
+$existing = Get-PnPList -Identity $listInternalName -ErrorAction SilentlyContinue
 if ($existing) {
-    Write-Host "A list named '$listName' already exists on this site. Exiting without changes." -ForegroundColor Yellow
+    Write-Host "A list named '$listInternalName' already exists on this site. Exiting without changes." -ForegroundColor Yellow
     exit 0
 }
 
-Write-Host "Creating list: $listName..." -ForegroundColor Cyan
-New-PnPList -Title $listName -Template GenericList -OnQuickLaunch
+Write-Host "Creating list: $listInternalName..." -ForegroundColor Cyan
+New-PnPList -Title $listInternalName -Template GenericList -OnQuickLaunch
+Set-PnPList -Identity $listInternalName -Title $listDisplayName
 Write-Host "List created.`n" -ForegroundColor Green
 
 #endregion List Creation *#
@@ -77,7 +79,7 @@ function Add-ChoiceField {
     $choiceXml = "<Field Type='Choice' DisplayName='$DisplayName' Name='$InternalName' Required='FALSE' Format='Dropdown'><CHOICES>"
     foreach ($c in $Choices) { $choiceXml += "<CHOICE>$c</CHOICE>" }
     $choiceXml += "</CHOICES></Field>"
-    Add-PnPFieldFromXml -List $listName -FieldXml $choiceXml | Out-Null
+    Add-PnPFieldFromXml -List $listInternalName -FieldXml $choiceXml | Out-Null
 }
 
 function Add-TextField {
@@ -91,7 +93,7 @@ function Add-TextField {
     } else {
         $xml = "<Field Type='Text' DisplayName='$DisplayName' Name='$InternalName' Required='FALSE' />"
     }
-    Add-PnPFieldFromXml -List $listName -FieldXml $xml | Out-Null
+    Add-PnPFieldFromXml -List $listInternalName -FieldXml $xml | Out-Null
 }
 
 function Add-DateField {
@@ -100,7 +102,7 @@ function Add-DateField {
         [string]$InternalName
     )
     $xml = "<Field Type='DateTime' DisplayName='$DisplayName' Name='$InternalName' Required='FALSE' Format='DateOnly' />"
-    Add-PnPFieldFromXml -List $listName -FieldXml $xml | Out-Null
+    Add-PnPFieldFromXml -List $listInternalName -FieldXml $xml | Out-Null
 }
 
 function Add-NumberField {
@@ -109,7 +111,7 @@ function Add-NumberField {
         [string]$InternalName
     )
     $xml = "<Field Type='Number' DisplayName='$DisplayName' Name='$InternalName' Required='FALSE' />"
-    Add-PnPFieldFromXml -List $listName -FieldXml $xml | Out-Null
+    Add-PnPFieldFromXml -List $listInternalName -FieldXml $xml | Out-Null
 }
 
 #endregion Helper Functions *#
@@ -117,7 +119,7 @@ function Add-NumberField {
 #region Section A: Solution Identity *#
 
 Write-Host "Adding Section A: Solution Identity..." -ForegroundColor Cyan
-Set-PnPField -List $listName -Identity "Title" -Values @{Title = "Solution Name"} | Out-Null
+Set-PnPField -List $listInternalName -Identity "Title" -Values @{Title = "Solution Name"} | Out-Null
 Add-TextField    -DisplayName "Solution ID"                -InternalName "SolutionID"
 Add-TextField    -DisplayName "Solution URL(s)"            -InternalName "SolutionURLs"
 Add-TextField    -DisplayName "Site Collection"            -InternalName "SiteCollection"
@@ -204,6 +206,6 @@ Add-TextField    -DisplayName "Documentation Location"             -InternalName
 #region Complete *#
 
 Write-Host "`nAll fields added successfully." -ForegroundColor Green
-Write-Host "List '$listName' is ready at: $siteUrl" -ForegroundColor Green
+Write-Host "List '$listDisplayName' is ready at: $siteUrl" -ForegroundColor Green
 
 #endregion Complete *#
