@@ -1,4 +1,4 @@
-# v08Mar26.3.0
+# v08Mar26.3.1
 # Manage-DFFSConfiguration.ps1
 # Manages form configurations in the DFFSConfigurationList on a SharePoint site.
 # Supports copying a configuration from one list to another,
@@ -152,7 +152,6 @@ if (-not $selectedAction) {
 
 if ($selectedAction.Action -eq 'B') {
 
-    # Locate the /forms folder relative to this script
     $formsFolder = Join-Path $PSScriptRoot '..\forms'
     $formsFolder = (Resolve-Path $formsFolder).Path
 
@@ -167,10 +166,11 @@ if ($selectedAction.Action -eq 'B') {
     Write-Host "`nWriting TAPCCatalog form configurations to '$listName'..." -ForegroundColor Cyan
 
     foreach ($entry in $formFiles) {
+
         $filePath = Join-Path $formsFolder $entry.File
 
         if (-not (Test-Path $filePath)) {
-            Write-Host "  File not found: $filePath — skipping." -ForegroundColor Yellow
+            Write-Host "  File not found: $filePath - skipping." -ForegroundColor Yellow
             continue
         }
 
@@ -178,10 +178,7 @@ if ($selectedAction.Action -eq 'B') {
 
         try {
             $formJson = Get-Content -Path $filePath -Raw -Encoding UTF8
-
-            # Validate it parses as JSON before writing
             $null = $formJson | ConvertFrom-Json
-
             Write-DFFSConfigEntry -titleValue $titleValue -formType $entry.FormType -formJson $formJson
         }
         catch {
@@ -190,10 +187,10 @@ if ($selectedAction.Action -eq 'B') {
     }
 
     Write-Host "`nDone. All form configurations processed." -ForegroundColor Green
-    Write-Host "IMPORTANT: You must manually activate mDFFS for each form type in SharePoint." -ForegroundColor Yellow
-    Write-Host "  1. Go to the TAPCCatalog list" -ForegroundColor Yellow
-    Write-Host "  2. Click the DFFS button in the toolbar" -ForegroundColor Yellow
-    Write-Host "  3. For each form type (New / Edit / Display): Install DFFS tab > toggle ON > Save" -ForegroundColor Yellow
+    Write-Host 'IMPORTANT: You must manually activate mDFFS for each form type in SharePoint.' -ForegroundColor Yellow
+    Write-Host '  1. Go to the TAPCCatalog list' -ForegroundColor Yellow
+    Write-Host '  2. Click the DFFS button in the toolbar' -ForegroundColor Yellow
+    Write-Host '  3. For each form type (New / Edit / Display): Install DFFS tab, toggle ON, then Save' -ForegroundColor Yellow
 
     exit 0
 }
@@ -295,7 +292,7 @@ if ($selectedAction.Action -eq 'A') {
     Write-DFFSConfigEntry -titleValue $targetTitleValue -formType $selectedTargetForm.FormType -formJson $sourceJson
 
     Write-Host "`nDone." -ForegroundColor Green
-    Write-Host "IMPORTANT: You must manually activate mDFFS on the target list form in SharePoint." -ForegroundColor Yellow
+    Write-Host 'IMPORTANT: You must manually activate mDFFS on the target list form in SharePoint.' -ForegroundColor Yellow
 
     #endregion Write Target Configuration *#
 }
