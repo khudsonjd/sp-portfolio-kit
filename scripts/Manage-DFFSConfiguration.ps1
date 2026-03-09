@@ -1,7 +1,8 @@
-# v08Mar26.2.3
+# v08Mar26.3.0
 # Manage-DFFSConfiguration.ps1
 # Manages form configurations in the DFFSConfigurationList on a SharePoint site.
-# Supports copying a configuration from one list to another.
+# Supports copying a configuration from one list to another,
+# and writing a configuration from a local JSON file.
 # Requires: PnP PowerShell module, Manage Lists permission on the target site.
 # Compatible with: PowerShell 5.1 and PowerShell 7.
 
@@ -11,20 +12,6 @@
 #   Title    - Format: [ListInternalName_100]
 #   Form     - Values: new | disp | edit
 #   FormJSON - The JSON configuration object for the form
-
-# MANUAL STEP REQUIRED — Install DFFS on each form:
-# After copying or writing a configuration, DFFS must be manually activated
-# for each form (New, Edit, Display) on the target list. There is no known
-# programmatic method to do this.
-#
-# Steps:
-#   1. Navigate to the target list in SharePoint.
-#   2. Click the DFFS button in the list toolbar.
-#   3. Select the form type (New / Edit / Display) from the dropdown.
-#   4. Click the "Install DFFS" tab.
-#   5. Toggle the button ON for each content type form.
-#   6. Click Save.
-#   7. Repeat for each form type.
 
 #endregion Script Metadata *#
 
@@ -114,13 +101,42 @@ function Get-DFFSConfigEntry {
     }
 }
 
+function Write-DFFSConfigEntry {
+    param (
+        [string]$titleValue,
+        [string]$formType,
+        [string]$formJson
+    )
+
+    $existing = Get-DFFSConfigEntry -titleValue $titleValue -formType $formType
+
+    if ($existing) {
+        Write-Host "  Existing entry found — updating..." -ForegroundColor Cyan
+        Set-PnPListItem -List $listName -Identity $existing.Id -Values @{
+            Title    = $titleValue
+            Form     = $formType
+            FormJSON = $formJson
+        } | Out-Null
+        Write-Host "  Updated: $titleValue / $formType" -ForegroundColor Green
+    }
+    else {
+        Write-Host "  No existing entry — creating..." -ForegroundColor Cyan
+        Add-PnPListItem -List $listName -Values @{
+            Title    = $titleValue
+            Form     = $formType
+            FormJSON = $formJson
+        } | Out-Null
+        Write-Host "  Created: $titleValue / $formType" -ForegroundColor Green
+    }
+}
+
 #endregion Helper Functions *#
 
 #region Action Selection *#
 
 $actions = @(
     [PSCustomObject]@{ Action = 'A'; Description = 'Copy a configuration from one list to another' }
-    [PSCustomObject]@{ Action = 'B'; Description = 'Write a configuration from a JSON file (coming soon)' }
+    [PSCustomObject]@{ Action = 'B'; Description = 'Write TAPCCatalog form configurations from JSON files' }
 )
 
 $selectedAction = $actions | Out-GridView -Title 'Select an action' -OutputMode Single
@@ -132,16 +148,59 @@ if (-not $selectedAction) {
 
 #endregion Action Selection *#
 
-#region Action B Stub *#
+#region Action B — Write from JSON Files *#
 
 if ($selectedAction.Action -eq 'B') {
-    Write-Host 'Write from JSON file - coming soon.' -ForegroundColor Yellow
+
+    # Locate the /forms folder relative to this script
+    $formsFolder = Join-Path $PSScriptRoot '..\forms'
+    $formsFolder = (Resolve-Path $formsFolder).Path
+
+    $formFiles = @(
+        @{ File = 'TAPCCatalog_new.json';  FormType = 'new'  }
+        @{ File = 'TAPCCatalog_edit.json'; FormType = 'edit' }
+        @{ File = 'TAPCCatalog_disp.json'; FormType = 'disp' }
+    )
+
+    $titleValue = '[TAPCCatalog_100]'
+
+    Write-Host "`nWriting TAPCCatalog form configurations to '$listName'..." -ForegroundColor Cyan
+
+    foreach ($entry in $formFiles) {
+        $filePath = Join-Path $formsFolder $entry.File
+
+        if (-not (Test-Path $filePath)) {
+            Write-Host "  File not found: $filePath — skipping." -ForegroundColor Yellow
+            continue
+        }
+
+        Write-Host "`nProcessing: $($entry.File)" -ForegroundColor Cyan
+
+        try {
+            $formJson = Get-Content -Path $filePath -Raw -Encoding UTF8
+
+            # Validate it parses as JSON before writing
+            $null = $formJson | ConvertFrom-Json
+
+            Write-DFFSConfigEntry -titleValue $titleValue -formType $entry.FormType -formJson $formJson
+        }
+        catch {
+            Write-Host "  Failed to process $($entry.File): $_" -ForegroundColor Red
+        }
+    }
+
+    Write-Host "`nDone. All form configurations processed." -ForegroundColor Green
+    Write-Host "IMPORTANT: You must manually activate mDFFS for each form type in SharePoint." -ForegroundColor Yellow
+    Write-Host "  1. Go to the TAPCCatalog list" -ForegroundColor Yellow
+    Write-Host "  2. Click the DFFS button in the toolbar" -ForegroundColor Yellow
+    Write-Host "  3. For each form type (New / Edit / Display): Install DFFS tab > toggle ON > Save" -ForegroundColor Yellow
+
     exit 0
 }
 
-#endregion Action B Stub *#
+#endregion Action B — Write from JSON Files *#
 
-#region Copy Configuration *#
+#region Action A — Copy Configuration *#
 
 if ($selectedAction.Action -eq 'A') {
 
@@ -198,14 +257,8 @@ if ($selectedAction.Action -eq 'A') {
         exit 0
     }
 
-    $sourceJson = $sourceEntry['FormJSON']
-
-    if (-not $sourceJson) {
-        Write-Host 'Source configuration exists but has no FormJSON content. Exiting.' -ForegroundColor Yellow
-        exit 0
-    }
-
-    Write-Host 'Source configuration read successfully.' -ForegroundColor Green
+    $sourceJson = $sourceEntry[0]['FormJSON']
+    Write-Host "Source configuration retrieved ($($sourceJson.Length) characters)." -ForegroundColor Green
 
     #endregion Read Source Configuration *#
 
@@ -238,52 +291,13 @@ if ($selectedAction.Action -eq 'A') {
 
     #region Write Target Configuration *#
 
-    Write-Host 'Checking for existing configuration on target...' -ForegroundColor Cyan
+    Write-Host "`nWriting configuration to target..." -ForegroundColor Cyan
+    Write-DFFSConfigEntry -titleValue $targetTitleValue -formType $selectedTargetForm.FormType -formJson $sourceJson
 
-    $existingTarget = Get-DFFSConfigEntry -titleValue $targetTitleValue -formType $selectedTargetForm.FormType
-
-    if ($existingTarget) {
-        Write-Host "A configuration already exists for '$targetTitleValue' / '$($selectedTargetForm.FormType)'." -ForegroundColor Yellow
-        $confirm = Read-Host 'Overwrite it? (Y / N)'
-
-        if ($confirm.ToUpper() -ne 'Y') {
-            Write-Host 'Copy cancelled. No changes made.' -ForegroundColor Yellow
-            exit 0
-        }
-
-        try {
-            Set-PnPListItem -List $listName -Identity $existingTarget.Id -Values @{
-                FormJSON = $sourceJson
-            } | Out-Null
-            Write-Host "Configuration updated on '$($targetList.DisplayName)' / $($selectedTargetForm.Label)." -ForegroundColor Green
-        }
-        catch {
-            Write-Error "Failed to update target configuration. $_"
-            exit 1
-        }
-    }
-    else {
-        try {
-            Add-PnPListItem -List $listName -Values @{
-                Title    = $targetTitleValue
-                Form     = $selectedTargetForm.FormType
-                FormJSON = $sourceJson
-            } | Out-Null
-            Write-Host "Configuration created on '$($targetList.DisplayName)' / $($selectedTargetForm.Label)." -ForegroundColor Green
-        }
-        catch {
-            Write-Error "Failed to create target configuration. $_"
-            exit 1
-        }
-    }
+    Write-Host "`nDone." -ForegroundColor Green
+    Write-Host "IMPORTANT: You must manually activate mDFFS on the target list form in SharePoint." -ForegroundColor Yellow
 
     #endregion Write Target Configuration *#
 }
 
-#endregion Copy Configuration *#
-
-#region Output *#
-
-Write-Host 'Done.' -ForegroundColor Cyan
-
-#endregion Output *#
+#endregion Action A — Copy Configuration *#
