@@ -521,13 +521,15 @@ function Update-TAPCatalog {
 
             # Bypass PnP validation for Hyperlink fields by updating via REST API
             $restUrl = "$portfolioSiteUrl/_api/web/lists/getbytitle('$catalogListName')/items($catalogItemId)"
-            $payload = @{
-                "__metadata" = @{ "type" = "SP.Data.$($catalogListName)ListItem" }
-                $CATALOG_LAST_REPORT_LINK = @{
-                    "Description" = $linkDesc
-                    "Url"         = $linkUrl
-                }
-            } | ConvertTo-Json -Depth 5
+            
+            # Construct raw JSON string to bypass PS 5.1 ConvertTo-Json object cycle bugs
+            $payload = @"{
+    `"__metadata`": { `"type`": `"SP.Data.$($catalogListName)ListItem`" },
+    `"$CATALOG_LAST_REPORT_LINK`": {
+        `"Description`": `"$linkDesc`",
+        `"Url`": `"$linkUrl`"
+    }
+}"@
 
             Invoke-PnPSPRestMethod -Method MERGE -Url $restUrl -Content $payload -ContentType "application/json;odata=verbose" | Out-Null
             
