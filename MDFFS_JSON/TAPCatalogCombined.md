@@ -79,7 +79,7 @@
 {"id":"7000000000000006","type":"field","fin":"FirstLineResolvable","useCustomFieldLabel":true,"fieldLabel":"First-Line Resolvable?","labelPosition":"left","labelStyle":"","style":"","fieldLabelMUI":{},"fieldDescription":"","fieldDescriptionMUI":{},"useCustomFieldDescription":false,"useCustomDescriptionMUI":false,"childIndex":50},
 {"id":"7000000000000007","type":"field","fin":"DocumentationLocation","useCustomFieldLabel":true,"fieldLabel":"Documentation Location","labelPosition":"left","labelStyle":"","style":"","fieldLabelMUI":{},"fieldDescription":"","fieldDescriptionMUI":{},"useCustomFieldDescription":false,"useCustomDescriptionMUI":false,"childIndex":51},
 {"id":"7000000000000008","type":"field","fin":"Attachments","useCustomFieldLabel":false,"fieldLabel":"Attachments","labelPosition":"left","labelStyle":"","style":"","fieldLabelMUI":{},"fieldDescription":"","fieldDescriptionMUI":{},"useCustomFieldDescription":false,"useCustomDescriptionMUI":false,"childIndex":52}
-],"childIndex":0}],"childIndex":0}],"childIndex":1}]}]
+],"childIndex":0}],"childIndex":0}],"childIndex":1}]
 
 
 # --- RULESJSON ---
