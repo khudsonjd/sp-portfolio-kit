@@ -334,8 +334,23 @@ function Get-ListLastModifiedDate {
         return $null
     }
 
-    if ($null -ne $items -and $items.Count -gt 0) {
-        return $items[0]["Modified"]
+    if ($null -ne $items) {
+        $firstItem = $null
+        if ($items -is [array] -or $items -is [System.Collections.IEnumerable]) {
+            if ($items.Count -gt 0) {
+                $firstItem = $items[0]
+            }
+        } else {
+            $firstItem = $items
+        }
+
+        if ($null -ne $firstItem) {
+            if ($null -ne $firstItem.FieldValues -and $firstItem.FieldValues.ContainsKey("Modified")) {
+                return $firstItem.FieldValues["Modified"]
+            } elseif ($null -ne $firstItem["Modified"]) {
+                return $firstItem["Modified"]
+            }
+        }
     }
     return $null
 }
