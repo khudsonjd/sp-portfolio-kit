@@ -327,8 +327,7 @@ function Get-ListLastModifiedDate {
     $items = $null
     try {
         $items = Get-PnPListItem -List $listName `
-                     -Query "<View><Query><OrderBy><FieldRef Name='Modified' Ascending='FALSE'/></OrderBy></Query><RowLimit>1</RowLimit></View>" `
-                     -Fields "Modified"
+                     -Query "<View><Query><OrderBy><FieldRef Name='Modified' Ascending='FALSE'/></OrderBy></Query><RowLimit>1</RowLimit></View>"
     }
     catch {
         Write-Log "Failed to read items from '$listName' for last modified date. $_" -level "ERROR"
@@ -484,7 +483,7 @@ function Update-TAPCatalog {
             Set-PnPListItem -List $catalogListName -Identity $catalogItemId -Values @{
                 $CATALOG_LAST_REPORT_DATE = $today
                 $CATALOG_LAST_REPORT_LINK = $linkValue
-            } -SystemUpdate | Out-Null
+            } -UpdateType SystemUpdate | Out-Null
             
             Write-Log "Updated catalog item ID $catalogItemId with latest report link and date." -level "INFO"
         }
