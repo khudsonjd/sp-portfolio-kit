@@ -512,7 +512,9 @@ function Update-TAPCatalog {
             
             # Form SharePoint Hyperlink field value (URL, Description)
             # Append ?web=1 to ensure the file opens in the browser instead of forcing a download
-            $linkValue = "$absoluteUrl?web=1, View Site Report ($today)"
+            $linkValue = New-Object Microsoft.SharePoint.Client.FieldUrlValue
+            $linkValue.Url = "$absoluteUrl?web=1"
+            $linkValue.Description = "View Site Report ($todayStr)"
 
             Set-PnPListItem -List $catalogListName -Identity $catalogItemId -Values @{
                 $CATALOG_LAST_REPORT_DATE = $today
