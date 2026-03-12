@@ -512,14 +512,24 @@ function Update-TAPCatalog {
             
             # Form SharePoint Hyperlink field value (URL, Description)
             # Append ?web=1 to ensure the file opens in the browser instead of forcing a download
-            $linkValue = New-Object Microsoft.SharePoint.Client.FieldUrlValue
-            $linkValue.Url = "$absoluteUrl?web=1"
-            $linkValue.Description = "View Site Report ($todayStr)"
+            $linkUrl = "$absoluteUrl?web=1"
+            $linkDesc = "View Site Report ($todayStr)"
 
             Set-PnPListItem -List $catalogListName -Identity $catalogItemId -Values @{
                 $CATALOG_LAST_REPORT_DATE = $today
-                $CATALOG_LAST_REPORT_LINK = $linkValue
             } -UpdateType SystemUpdate | Out-Null
+
+            # Bypass PnP validation for Hyperlink fields by updating via REST API
+            $restUrl = "$portfolioSiteUrl/_api/web/lists/getbytitle('$catalogListName')/items($catalogItemId)"
+            $payload = @{
+                "__metadata" = @{ "type" = "SP.Data.$($catalogListName)ListItem" }
+                $CATALOG_LAST_REPORT_LINK = @{
+                    "Description" = $linkDesc
+                    "Url"         = $linkUrl
+                }
+            } | ConvertTo-Json -Depth 5
+
+            Invoke-PnPSPRestMethod -Method MERGE -Url $restUrl -Content $payload -ContentType "application/json;odata=verbose" | Out-Null
             
             Write-Log "Updated catalog item ID $catalogItemId with latest report link and date." -level "INFO"
         }
