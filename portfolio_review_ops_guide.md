@@ -75,6 +75,13 @@ Complete these steps once before the first review cycle begins.
 
 ### Phase 1: Pre-Review Preparation (4 Weeks Before Review Date)
 
+**Week -4: Automated Site Discovery (Optional)**
+If your enterprise has hundreds of sites, use the `Automate-SiteReview.ps1` script to discover DFFS/mDFFS usage.
+- Ensure you have `PnP.PowerShell` and `ImportExcel` modules installed.
+- Ensure your `MasterSharePointInventory` list is up to date (see `MasterInventory_Setup.md`).
+- Run the script. It will read your inventory list, connect to each site, document DFFS lists, and attach an Excel report to the respective TAPC Catalog entry.
+- *Command:* `.\scripts\Automate-SiteReview.ps1 -MasterInventoryUrl [InventoryURL] -CatalogUrl [CatalogURL]`
+
 **Week –4: Catalog Hygiene**
 - Review all catalog entries; flag any with missing required fields
 - Confirm solution owner contacts are current (check for org changes, departures)

@@ -18,7 +18,7 @@ Each form configuration is a separate list item with these fields:
 
 | Field | Description | Example |
 |---|---|---|
-| `Title` | Identifies the list using its internal (URL) name | `[TAPCCatalog_100]` |
+| `Title` | Identifies the list using its internal (URL) name | `[TAPCatalog_100]` |
 | `Form` | The form type this config applies to | `new` / `edit` / `disp` |
 | `FormJSON` | The JSON string defining the form layout | *(see below)* |
 

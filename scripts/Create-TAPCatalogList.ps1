@@ -1,6 +1,6 @@
-# v08Mar26.4.6
-# Create-TAPCCatalogList.ps1
-# Creates the TAPCCatalog list on a SharePoint site, then updates all field
+# v11Mar26.1.1
+# Create-TAPCatalogList.ps1
+# Creates the TAPCatalog list on a SharePoint site, then updates all field
 # display names to human-readable values.
 # Requires: PnP PowerShell module, Site Collection Admin access.
 # Compatible with: PowerShell 5.1 and PowerShell 7.
@@ -41,8 +41,10 @@ $siteUrl = if ($inputUrl.Trim() -eq "") { $defaultUrl } else { $inputUrl.Trim() 
 Write-Host "`nConnecting to: $siteUrl" -ForegroundColor Cyan
 
 $env:PNPPOWERSHELL_UPDATECHECK = "Off"
+$clientId = "3dac4cee-ad25-4e62-a904-60d2cbc36c9b"
+
 try {
-    Connect-PnPOnline -Url $siteUrl -UseWebLogin -WarningAction SilentlyContinue
+    Connect-PnPOnline -Url $siteUrl -Interactive -ClientId $clientId -WarningAction SilentlyContinue
     Write-Host "Connected successfully.`n" -ForegroundColor Green
 } catch {
     Write-Host "Connection failed: $_" -ForegroundColor Red
@@ -53,7 +55,7 @@ try {
 
 #region List Creation *#
 
-$listName = "TAPCCatalog"
+$listName = "TAPCatalog"
 
 $existing = Get-PnPList -Identity $listName -ErrorAction SilentlyContinue
 if ($existing) {
@@ -109,6 +111,17 @@ function Add-DateField {
     Add-PnPFieldFromXml -List $listName -FieldXml $xml | Out-Null
 }
 #endregion Function: Add-DateField *#
+
+#region Function: Add-UrlField *#
+function Add-UrlField {
+    param (
+        [string]$DisplayName,
+        [string]$InternalName
+    )
+    $xml = "<Field Type='URL' DisplayName='$DisplayName' Name='$InternalName' Required='FALSE' Format='Hyperlink' />"
+    Add-PnPFieldFromXml -List $listName -FieldXml $xml | Out-Null
+}
+#endregion Function: Add-UrlField *#
 
 #region Function: Add-NumberField *#
 function Add-NumberField {
@@ -206,6 +219,8 @@ Add-ChoiceField  -DisplayName "WorkflowsDocumented"     -InternalName "Workflows
 Add-ChoiceField  -DisplayName "EscalationDefined"       -InternalName "EscalationDefined"     -Choices @("Complete","Not started")
 Add-ChoiceField  -DisplayName "FirstLineResolvable"     -InternalName "FirstLineResolvable"   -Choices @("Yes","Partially","No")
 Add-TextField    -DisplayName "DocumentationLocation"   -InternalName "DocumentationLocation"
+Add-DateField    -DisplayName "LastReportDate"          -InternalName "LastReportDate"
+Add-UrlField     -DisplayName "LastReportLink"          -InternalName "LastReportLink"
 
 #endregion Section F: Operational Documentation Status *#
 
@@ -275,6 +290,8 @@ Set-PnPField -List $listName -Identity "WorkflowsDocumented"    -Values @{Title 
 Set-PnPField -List $listName -Identity "EscalationDefined"      -Values @{Title = "Escalation Path Defined"} | Out-Null
 Set-PnPField -List $listName -Identity "FirstLineResolvable"    -Values @{Title = "First-Line Resolvable?"} | Out-Null
 Set-PnPField -List $listName -Identity "DocumentationLocation"  -Values @{Title = "Documentation Location"} | Out-Null
+Set-PnPField -List $listName -Identity "LastReportDate"         -Values @{Title = "Automated Review Date"} | Out-Null
+Set-PnPField -List $listName -Identity "LastReportLink"         -Values @{Title = "Automated Review Link"} | Out-Null
 
 #endregion Display Name Updates *#
 

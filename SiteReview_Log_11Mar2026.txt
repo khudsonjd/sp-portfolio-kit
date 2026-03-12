@@ -1,0 +1,30 @@
+[2026-03-11 12:38:43] [INFO] Script started. Master Inventory: https://groovepoint.sharepoint.com/sites/Portfolio/Lists/MasterSharePointInventory | Catalog: https://groovepoint.sharepoint.com/sites/Portfolio/Lists/TAPCCatalog
+[2026-03-11 12:38:43] [INFO] Connecting to site: https://groovepoint.sharepoint.com/sites/Portfolio
+[2026-03-11 12:38:47] [INFO] Retrieved 1 site(s) from master inventory.
+[2026-03-11 12:38:47] [INFO] --- Processing site 1 of 1: https://groovepoint.sharepoint.com/sites/Portfolio ---
+[2026-03-11 12:38:47] [INFO] Connecting to site: https://groovepoint.sharepoint.com/sites/Portfolio
+[2026-03-11 12:38:51] [INFO] Created view 'zPortfolioAnalysis' on '/lists/classictwotabform/dispform.aspx' at https://groovepoint.sharepoint.com/sites/Portfolio.
+[2026-03-11 12:38:51] [ERROR] Failed to read items from '/lists/classictwotabform/dispform.aspx' for last modified date. Parameter set cannot be resolved using the specified named parameters.
+[2026-03-11 12:38:52] [INFO] Recorded list 'ClassicTwoTabForm' (Classic DFFS) at https://groovepoint.sharepoint.com/sites/Portfolio.
+[2026-03-11 12:38:53] [INFO] View 'zPortfolioAnalysis' already exists on '/lists/classictwotabform/editform.aspx'. Skipping.
+[2026-03-11 12:38:53] [ERROR] Failed to read items from '/lists/classictwotabform/editform.aspx' for last modified date. Parameter set cannot be resolved using the specified named parameters.
+[2026-03-11 12:38:53] [INFO] Recorded list 'ClassicTwoTabForm' (Classic DFFS) at https://groovepoint.sharepoint.com/sites/Portfolio.
+[2026-03-11 12:38:54] [INFO] View 'zPortfolioAnalysis' already exists on '/lists/classictwotabform/newform.aspx'. Skipping.
+[2026-03-11 12:38:54] [ERROR] Failed to read items from '/lists/classictwotabform/newform.aspx' for last modified date. Parameter set cannot be resolved using the specified named parameters.
+[2026-03-11 12:38:55] [INFO] Recorded list 'ClassicTwoTabForm' (Classic DFFS) at https://groovepoint.sharepoint.com/sites/Portfolio.
+[2026-03-11 12:38:56] [ERROR] Failed to remove entry ID  from 'DFFSConfigurationList'. Cannot validate argument on parameter 'Identity'. The argument is null. Provide a valid value for the argument, and then try running the command again.
+[2026-03-11 12:38:58] [WARN] Cleanup: removed '[SingleColForm_100]' (ID 7) from 'DFFSConfigurationList'.
+[2026-03-11 12:38:58] [WARN] Cleanup: removed '[SingleColForm_100]' (ID 8) from 'DFFSConfigurationList'.
+[2026-03-11 12:38:59] [WARN] Cleanup: removed '[SingleColForm_100]' (ID 9) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:00] [WARN] Cleanup: removed '[TAPCCatalog_100]' (ID 2) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:01] [WARN] Cleanup: removed '[TAPCCatalog_100]' (ID 3) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:01] [WARN] Cleanup: removed '[TAPCCatalog_100]' (ID 6) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:06] [WARN] Cleanup: removed '[TAPCCatalog_100]' (ID 12) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:07] [WARN] Cleanup: removed '[TAPCCatalog_100]' (ID 13) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:08] [WARN] Cleanup: removed '[TAPCCatalog_100]' (ID 14) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:09] [WARN] Cleanup: removed '[TwoTabForm_100]' (ID 10) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:10] [WARN] Cleanup: removed '[TwoTabForm_100]' (ID 11) from 'DFFSConfigurationList'.
+[2026-03-11 12:39:11] [INFO] Excel report written: C:\Users\Owner\AppData\Local\Temp\Site Report for site Portfolio.xlsx
+[2026-03-11 12:39:11] [INFO] Connecting to site: https://groovepoint.sharepoint.com/sites/Portfolio
+[2026-03-11 12:39:55] [ERROR] Unhandled error processing site https://groovepoint.sharepoint.com/sites/Portfolio. Skipping. Unable to connect using provided arguments
+[2026-03-11 12:39:55] [INFO] Script completed. Log written to: SiteReview_Log_11Mar2026.txt

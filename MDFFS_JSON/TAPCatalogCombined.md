@@ -1,5 +1,5 @@
-# mDFFS Form Configuration — TAPCCatalog
-# Version: v08Mar26.1.0
+# mDFFS Form Configuration — TAPCatalog
+# Version: v11Mar26.1.0
 #
 # Instructions:
 # 1. Go to DFFSConfigurationList on your SharePoint site.
@@ -20,7 +20,7 @@
 
 # ============================================================
 # ENTRIES 1, 2, AND 3
-# Titles: TAPCCatalog_New / TAPCCatalog_Edit / TAPCCatalog_Display
+# Titles: TAPCatalog_New / TAPCatalog_Edit / TAPCatalog_Display
 # FormJSON and RulesJSON are identical for all three.
 # ============================================================
 

@@ -1,4 +1,4 @@
-# v08Mar26.3.1
+# v11Mar26.1.1
 # Manage-DFFSConfiguration.ps1
 # Manages form configurations in the DFFSConfigurationList on a SharePoint site.
 # Supports copying a configuration from one list to another,
@@ -15,10 +15,18 @@
 
 #endregion Script Metadata *#
 
+$ScriptVersion = "v11Mar26.1.1"
+
+$host.UI.RawUI.WindowTitle = "Manage DFFS Configuration ($ScriptVersion)"
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host " Manage DFFS Configuration ($ScriptVersion)" -ForegroundColor Cyan
+Write-Host "========================================`n" -ForegroundColor Cyan
+
 #region Configuration *#
 
 $listName       = 'DFFSConfigurationList'
 $defaultSiteUrl = 'https://groovepoint.sharepoint.com/sites/Portfolio/'
+$clientId       = '3dac4cee-ad25-4e62-a904-60d2cbc36c9b'
 
 #endregion Configuration *#
 
@@ -59,7 +67,7 @@ Write-Host "Connecting to: $siteUrl" -ForegroundColor Cyan
 $env:PNPPOWERSHELL_UPDATECHECK = 'Off'
 
 try {
-    Connect-PnPOnline -Url $siteUrl -UseWebLogin -WarningAction SilentlyContinue
+    Connect-PnPOnline -Url $siteUrl -Interactive -ClientId $clientId -WarningAction SilentlyContinue
     Write-Host 'Connected successfully.' -ForegroundColor Green
 }
 catch {
@@ -136,10 +144,10 @@ function Write-DFFSConfigEntry {
 
 $actions = @(
     [PSCustomObject]@{ Action = 'A'; Description = 'Copy a configuration from one list to another' }
-    [PSCustomObject]@{ Action = 'B'; Description = 'Write TAPCCatalog form configurations from JSON files' }
+    [PSCustomObject]@{ Action = 'B'; Description = 'Write TAPCatalog form configurations from JSON files' }
 )
 
-$selectedAction = $actions | Out-GridView -Title 'Select an action' -OutputMode Single
+$selectedAction = $actions | Out-GridView -Title "Select an action ($ScriptVersion)" -OutputMode Single
 
 if (-not $selectedAction) {
     Write-Host 'No action selected. Exiting.' -ForegroundColor Yellow
@@ -156,14 +164,30 @@ if ($selectedAction.Action -eq 'B') {
     $formsFolder = (Resolve-Path $formsFolder).Path
 
     $formFiles = @(
-        @{ File = 'TAPCCatalog_new.json';  FormType = 'new'  }
-        @{ File = 'TAPCCatalog_edit.json'; FormType = 'edit' }
-        @{ File = 'TAPCCatalog_disp.json'; FormType = 'disp' }
+        @{ File = 'TAPCatalog_new.json';  FormType = 'new'  }
+        @{ File = 'TAPCatalog_edit.json'; FormType = 'edit' }
+        @{ File = 'TAPCatalog_disp.json'; FormType = 'disp' }
     )
 
-    $titleValue = '[TAPCCatalog_100]'
+    Write-Host "`nRetrieving site lists..." -ForegroundColor Cyan
 
-    Write-Host "`nWriting TAPCCatalog form configurations to '$listName'..." -ForegroundColor Cyan
+    $siteLists = Get-NonHiddenLists
+
+    if (-not $siteLists -or $siteLists.Count -eq 0) {
+        Write-Host 'No lists found on this site. Exiting.' -ForegroundColor Yellow
+        exit 0
+    }
+
+    $targetList = $siteLists | Out-GridView -Title "Select the TARGET list for these forms ($ScriptVersion)" -OutputMode Single
+
+    if (-not $targetList) {
+        Write-Host 'No target list selected. Exiting.' -ForegroundColor Yellow
+        exit 0
+    }
+
+    $titleValue = '[' + $targetList.InternalName + '_100]'
+
+    Write-Host "`nWriting form configurations to '$($targetList.Title)' ($titleValue)..." -ForegroundColor Cyan
 
     foreach ($entry in $formFiles) {
 
@@ -177,8 +201,11 @@ if ($selectedAction.Action -eq 'B') {
         Write-Host "`nProcessing: $($entry.File)" -ForegroundColor Cyan
 
         try {
-            $formJson = Get-Content -Path $filePath -Raw -Encoding UTF8
-            $null = $formJson | ConvertFrom-Json
+            # mDFFS expects the JSON string to be minified (no newlines/tabs)
+            # Do NOT use ConvertTo-Json here as it corrupts deeply nested arrays into hashtables
+            $rawJson = Get-Content -Path $filePath -Raw -Encoding UTF8
+            $formJson = $rawJson -replace '[\r\n\t]+', ''
+            
             Write-DFFSConfigEntry -titleValue $titleValue -formType $entry.FormType -formJson $formJson
         }
         catch {
@@ -188,7 +215,7 @@ if ($selectedAction.Action -eq 'B') {
 
     Write-Host "`nDone. All form configurations processed." -ForegroundColor Green
     Write-Host 'IMPORTANT: You must manually activate mDFFS for each form type in SharePoint.' -ForegroundColor Yellow
-    Write-Host '  1. Go to the TAPCCatalog list' -ForegroundColor Yellow
+    Write-Host '  1. Go to the TAPCatalog list' -ForegroundColor Yellow
     Write-Host '  2. Click the DFFS button in the toolbar' -ForegroundColor Yellow
     Write-Host '  3. For each form type (New / Edit / Display): Install DFFS tab, toggle ON, then Save' -ForegroundColor Yellow
 
@@ -212,7 +239,7 @@ if ($selectedAction.Action -eq 'A') {
 
     #region Select Source List *#
 
-    $sourceList = $siteLists | Out-GridView -Title 'Select the SOURCE list' -OutputMode Single
+    $sourceList = $siteLists | Out-GridView -Title "Select the SOURCE list ($ScriptVersion)" -OutputMode Single
 
     if (-not $sourceList) {
         Write-Host 'No source list selected. Exiting.' -ForegroundColor Yellow
@@ -232,7 +259,7 @@ if ($selectedAction.Action -eq 'A') {
         [PSCustomObject]@{ FormType = 'edit'; Label = 'Edit Form' }
     )
 
-    $selectedSourceForm = $formTypes | Out-GridView -Title 'Select the SOURCE form type' -OutputMode Single
+    $selectedSourceForm = $formTypes | Out-GridView -Title "Select the SOURCE form type ($ScriptVersion)" -OutputMode Single
 
     if (-not $selectedSourceForm) {
         Write-Host 'No source form type selected. Exiting.' -ForegroundColor Yellow
@@ -261,7 +288,7 @@ if ($selectedAction.Action -eq 'A') {
 
     #region Select Target List *#
 
-    $targetList = $siteLists | Out-GridView -Title 'Select the TARGET list' -OutputMode Single
+    $targetList = $siteLists | Out-GridView -Title "Select the TARGET list ($ScriptVersion)" -OutputMode Single
 
     if (-not $targetList) {
         Write-Host 'No target list selected. Exiting.' -ForegroundColor Yellow
@@ -275,7 +302,7 @@ if ($selectedAction.Action -eq 'A') {
 
     #region Select Target Form Type *#
 
-    $selectedTargetForm = $formTypes | Out-GridView -Title 'Select the TARGET form type' -OutputMode Single
+    $selectedTargetForm = $formTypes | Out-GridView -Title "Select the TARGET form type ($ScriptVersion)" -OutputMode Single
 
     if (-not $selectedTargetForm) {
         Write-Host 'No target form type selected. Exiting.' -ForegroundColor Yellow

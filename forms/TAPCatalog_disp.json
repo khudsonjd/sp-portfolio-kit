@@ -1,0 +1,190 @@
+﻿{
+    "value":  [
+                  {
+                      "id":  "1000000000000001",
+                      "type":  "grid",
+                      "width":  "",
+                      "widthUnit":  "px",
+                      "style":  "",
+                      "children":  [
+                                       {
+                                           "id":  "1000000000000002",
+                                           "type":  "row",
+                                           "style":  "",
+                                           "children":  [
+                                                            {
+                                                                "id":  "1000000000000003",
+                                                                "type":  "col",
+                                                                "style":  "",
+                                                                "size":  {
+                                                                             "sm":  12,
+                                                                             "md":  12,
+                                                                             "lg":  12,
+                                                                             "xl":  4
+                                                                         },
+                                                                "children":  [
+                                                                                 {
+                                                                                     "id":  "1000000000000004",
+                                                                                     "type":  "field",
+                                                                                     "fin":  "ID",
+                                                                                     "useCustomFieldLabel":  false,
+                                                                                     "useCustomFieldLabelMUI":  false,
+                                                                                     "fieldLabel":  "ID",
+                                                                                     "labelPosition":  "left",
+                                                                                     "labelStyle":  "",
+                                                                                     "style":  "",
+                                                                                     "fieldLabelMUI":  {
+
+                                                                                                       },
+                                                                                     "fieldDescription":  "",
+                                                                                     "fieldDescriptionMUI":  {
+
+                                                                                                             },
+                                                                                     "useCustomFieldDescription":  false,
+                                                                                     "useCustomDescriptionMUI":  false,
+                                                                                     "childIndex":  0
+                                                                                 }
+                                                                             ],
+                                                                "childIndex":  0
+                                                            }
+                                                        ],
+                                           "childIndex":  0
+                                       },
+                                       {
+                                           "id":  "1000000000000005",
+                                           "type":  "row",
+                                           "style":  "",
+                                           "children":  [
+                                                            {
+                                                                "id":  "1000000000000006",
+                                                                "type":  "col",
+                                                                "style":  "",
+                                                                "size":  {
+                                                                             "sm":  12,
+                                                                             "md":  12,
+                                                                             "lg":  12,
+                                                                             "xl":  12
+                                                                         },
+                                                                "children":  [
+                                                                                 {
+                                                                                     "id":  "2000000000000001",
+                                                                                     "type":  "field",
+                                                                                     "fin":  "Title",
+                                                                                     "useCustomFieldLabel":  true,
+                                                                                     "fieldLabel":  "Solution Name",
+                                                                                     "labelPosition":  "left",
+                                                                                     "labelStyle":  "",
+                                                                                     "style":  "",
+                                                                                     "fieldLabelMUI":  {
+
+                                                                                                       },
+                                                                                     "fieldDescription":  "",
+                                                                                     "fieldDescriptionMUI":  {
+
+                                                                                                             },
+                                                                                     "useCustomFieldDescription":  false,
+                                                                                     "useCustomDescriptionMUI":  false,
+                                                                                     "childIndex":  0
+                                                                                 },
+                                                                                 {
+                                                                                     "id":  "1000000000000007",
+                                                                                     "type":  "pivot",
+                                                                                     "style":  "",
+                                                                                     "sticky":  false,
+                                                                                     "children":  [
+                                                                                                      {
+                                                                                                          "id":  "11111111111111111",
+                                                                                                          "type":  "pivotItem",
+                                                                                                          "text":  "A — Identity",
+                                                                                                          "style":  "",
+                                                                                                          "children":  [
+                                                                                                                           "@{id=1000000000000008; type=row; style=; children=System.Object[]; childIndex=0}"
+                                                                                                                       ],
+                                                                                                          "childIndex":  0
+                                                                                                      },
+                                                                                                      {
+                                                                                                          "id":  "22222222222222222",
+                                                                                                          "type":  "pivotItem",
+                                                                                                          "text":  "B — Technical",
+                                                                                                          "style":  "",
+                                                                                                          "children":  [
+                                                                                                                           "@{id=1000000000000010; type=row; style=; children=System.Object[]; childIndex=0}"
+                                                                                                                       ],
+                                                                                                          "childIndex":  1
+                                                                                                      },
+                                                                                                      {
+                                                                                                          "id":  "33333333333333333",
+                                                                                                          "type":  "pivotItem",
+                                                                                                          "text":  "C — Business",
+                                                                                                          "style":  "",
+                                                                                                          "children":  [
+                                                                                                                           "@{id=1000000000000012; type=row; style=; children=System.Object[]; childIndex=0}"
+                                                                                                                       ],
+                                                                                                          "childIndex":  2
+                                                                                                      },
+                                                                                                      {
+                                                                                                          "id":  "44444444444444444",
+                                                                                                          "type":  "pivotItem",
+                                                                                                          "text":  "D — Cost \u0026 Dependency",
+                                                                                                          "style":  "",
+                                                                                                          "children":  [
+                                                                                                                           "@{id=1000000000000014; type=row; style=; children=System.Object[]; childIndex=0}"
+                                                                                                                       ],
+                                                                                                          "childIndex":  3
+                                                                                                      },
+                                                                                                      {
+                                                                                                          "id":  "55555555555555555",
+                                                                                                          "type":  "pivotItem",
+                                                                                                          "text":  "E — Disposition",
+                                                                                                          "style":  "",
+                                                                                                          "children":  [
+                                                                                                                           "@{id=1000000000000016; type=row; style=; children=System.Object[]; childIndex=0}"
+                                                                                                                       ],
+                                                                                                          "childIndex":  4
+                                                                                                      },
+                                                                                                      {
+                                                                                                          "id":  "66666666666666666",
+                                                                                                          "type":  "pivotItem",
+                                                                                                          "text":  "F — Documentation",
+                                                                                                          "style":  "",
+                                                                                                          "children":  [
+                                                                                                                           "@{id=1000000000000018; type=row; style=; children=System.Object[]; childIndex=0}"
+                                                                                                                       ],
+                                                                                                          "childIndex":  5
+                                                                                                      }
+                                                                                                  ],
+                                                                                     "childIndex":  1,
+                                                                                     "defaultSelected":  "44444444444444444"
+                                                                                 },
+                                                                                 {
+                                                                                     "id":  "7000000000000008",
+                                                                                     "type":  "field",
+                                                                                     "fin":  "Attachments",
+                                                                                     "useCustomFieldLabel":  false,
+                                                                                     "fieldLabel":  "Attachments",
+                                                                                     "labelPosition":  "left",
+                                                                                     "labelStyle":  "",
+                                                                                     "style":  "",
+                                                                                     "fieldLabelMUI":  {
+
+                                                                                                       },
+                                                                                     "fieldDescription":  "",
+                                                                                     "fieldDescriptionMUI":  {
+
+                                                                                                             },
+                                                                                     "useCustomFieldDescription":  false,
+                                                                                     "useCustomDescriptionMUI":  false,
+                                                                                     "childIndex":  2
+                                                                                 }
+                                                                             ],
+                                                                "childIndex":  0
+                                                            }
+                                                        ],
+                                           "childIndex":  1
+                                       }
+                                   ],
+                      "childIndex":  1
+                  }
+              ],
+    "Count":  1
+}

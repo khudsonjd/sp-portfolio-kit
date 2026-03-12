@@ -38,10 +38,10 @@ Follow these steps to deploy the TAPC Solution Catalog to your SharePoint enviro
 
 ### Step 1: Create the Catalog List
 
-Run the following script to create the `TAPCCatalog` list with all required fields and human-readable display names:
+Run the following script to create the `TAPCatalog` list with all required fields and human-readable display names:
 
 ```powershell
-.\scripts\Create-TAPCCatalogList.ps1
+.\scripts\Create-TAPCatalogList.ps1
 ```
 
 The script will prompt for your SharePoint site URL and connect via browser login. It creates all six sections of the catalog (Identity, Technical Profile, Business Profile, Cost & Dependency, Disposition & Modernization, Operational Documentation) and updates all field display names automatically.
@@ -71,22 +71,22 @@ mDFFS (Modern Dynamic Forms For SharePoint) is used to configure the New, Edit, 
 
 ### Step 4: Configure the mDFFS Forms
 
-Use the `Manage-DFFSConfiguration.ps1` script to write the TAPCCatalog form configurations to the `DFFSConfigurationList` on your target site:
+Use the `Manage-DFFSConfiguration.ps1` script to write the TAPCatalog form configurations to the `DFFSConfigurationList` on your target site:
 
 ```powershell
 .\scripts\Manage-DFFSConfiguration.ps1
 ```
 
-When prompted, select **"Write TAPCCatalog form configurations from JSON files"**. The script will read the three form configuration files from the `/forms` folder and write them to the `DFFSConfigurationList`, creating or updating entries as needed.
+When prompted, select **"Write TAPCatalog form configurations from JSON files"**. The script will read the three form configuration files from the `/forms` folder and write them to the `DFFSConfigurationList`, creating or updating entries as needed.
 
 The script supports two actions:
-- **Write TAPCCatalog form configurations from JSON files** — installs the New, Edit, and Display form configs for the TAPCCatalog list directly from the `/forms` folder
+- **Write TAPCatalog form configurations from JSON files** — installs the New, Edit, and Display form configs for the TAPCatalog list directly from the `/forms` folder
 - **Copy a configuration from one list to another** — copies an existing mDFFS form configuration from one list to another on the same site
 
 > ⚠️ **Manual activation required after every configuration write or copy:**
 > Writing a configuration to `DFFSConfigurationList` does not automatically activate mDFFS on the list forms. You must enable it manually for each form type (New, Edit, Display) as follows:
 >
-> 1. Navigate to the TAPCCatalog list in SharePoint
+> 1. Navigate to the TAPCatalog list in SharePoint
 > 2. Click the **DFFS** button in the list toolbar
 > 3. Select the form type (New / Edit / Display) from the dropdown
 > 4. Click the **Install DFFS** tab
@@ -95,6 +95,16 @@ The script supports two actions:
 > 7. Repeat for each form type
 >
 > There is no known programmatic method to perform this step.
+
+### Step 5: Automate Discovery (Optional)
+
+If your enterprise has hundreds of sites, use the `Automate-SiteReview.ps1` script to discover existing DFFS/mDFFS usage and automatically create or update draft catalog entries.
+
+```powershell
+.\scripts\Automate-SiteReview.ps1 -MasterInventoryUrl "https://yoursite.sharepoint.com/sites/Portfolio/Lists/MasterSharePointInventory" -CatalogUrl "https://yoursite.sharepoint.com/sites/Portfolio/Lists/TAPCatalog"
+```
+
+*Note: This script requires a Master Inventory list to read from. Refer to `MasterInventory_Setup.md` for instructions on how to create one.*
 
 ---
 

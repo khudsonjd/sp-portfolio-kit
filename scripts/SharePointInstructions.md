@@ -12,7 +12,7 @@
 
 | Internal Name | Display Name |
 |---|---|
-| `TAPCCatalog` | `TAPC Solution Catalog` |
+| `TAPCatalog` | `TAPC Solution Catalog` |
 | `SolutionID` | `Solution ID` |
 | `BusinessOwnerName` | `Business Owner Name` |
 | `LastActiveDate` | `Last Confirmed Active Date` |

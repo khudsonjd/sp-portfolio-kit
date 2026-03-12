@@ -1,6 +1,6 @@
 # v08Mar26.1.0
-# Update-TAPCCatalogDisplayNames.ps1
-# Updates the display names of all fields in the TAPCCatalog list.
+# Update-TAPCatalogDisplayNames.ps1
+# Updates the display names of all fields in the TAPCatalog list.
 # Requires: PnP PowerShell module, Site Collection Admin access.
 # Compatible with: PowerShell 5.1 and PowerShell 7.
 
@@ -50,7 +50,7 @@ try {
 
 #region Display Name Updates *#
 
-$listName = "TAPCCatalog"
+$listName = "TAPCatalog"
 
 Write-Host "Updating display names on list: $listName..." -ForegroundColor Cyan
 
