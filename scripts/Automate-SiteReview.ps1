@@ -453,8 +453,22 @@ function Update-TAPCatalog {
         return
     }
 
-    if ($null -ne $existingItem -and $existingItem.Count -gt 0) {
-        $catalogItemId = $existingItem[0].Id
+    $hasExisting = $false
+    $firstExisting = $null
+    if ($null -ne $existingItem) {
+        if ($existingItem -is [array] -or $existingItem -is [System.Collections.IEnumerable]) {
+            if ($existingItem.Count -gt 0) {
+                $hasExisting = $true
+                $firstExisting = $existingItem[0]
+            }
+        } else {
+            $hasExisting = $true
+            $firstExisting = $existingItem
+        }
+    }
+
+    if ($hasExisting -and $null -ne $firstExisting) {
+        $catalogItemId = $firstExisting.Id
         try {
             Set-PnPListItem -List $catalogListName -Identity $catalogItemId -Values @{
                 $CATALOG_LAST_UPDATED_FIELD = $today

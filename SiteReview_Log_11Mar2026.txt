@@ -102,3 +102,39 @@
 [2026-03-11 22:58:29] [INFO] List 'DFFSConfigurationList' not found on https://groovepoint.sharepoint.com/.
 [2026-03-11 22:58:29] [INFO] No DFFS-configured lists found on https://groovepoint.sharepoint.com/. Skipping report.
 [2026-03-11 22:58:29] [INFO] Script completed. Log written to: SiteReview_Log_11Mar2026.txt
+[2026-03-11 23:03:03] [INFO] Script started. Catalog: https://groovepoint.sharepoint.com/sites/Portfolio/Lists/TAPCatalog
+[2026-03-11 23:03:03] [INFO] Connecting to site: https://groovepoint.sharepoint.com/sites/Portfolio
+[2026-03-11 23:03:12] [INFO] Retrieved 4 site(s) from master inventory.
+[2026-03-11 23:03:12] [INFO] --- Processing site 1 of 4: https://groovepoint.sharepoint.com/sites/Portfolio ---
+[2026-03-11 23:03:12] [INFO] Connecting to site: https://groovepoint.sharepoint.com/sites/Portfolio
+[2026-03-11 23:03:13] [WARN] Target list 'c' not found on https://groovepoint.sharepoint.com/sites/Portfolio. Cleaning up.
+[2026-03-11 23:03:13] [INFO] Skipping 'c' (List does not exist but records remain in 'SPJS-DynamicFormsForSharePoint').
+[2026-03-11 23:03:15] [WARN] Target list 'ecf5675f-c8ad-40ef-8506-63780d3a6b99' not found on https://groovepoint.sharepoint.com/sites/Portfolio. Cleaning up.
+[2026-03-11 23:03:15] [INFO] Skipping 'ecf5675f-c8ad-40ef-8506-63780d3a6b99' (List does not exist but records remain in 'DFFSConfigurationList').
+[2026-03-11 23:03:15] [INFO] View 'zPortfolioAnalysis' already exists on 'MDFFSTEST'. Skipping.
+[2026-03-11 23:03:16] [INFO] Recorded list 'MDFFSTEST' (mDFFS) at https://groovepoint.sharepoint.com/sites/Portfolio.
+[2026-03-11 23:03:17] [INFO] View 'zPortfolioAnalysis' already exists on 'TAPCatalog'. Skipping.
+[2026-03-11 23:03:18] [INFO] Recorded list 'TAPCatalog' (mDFFS) at https://groovepoint.sharepoint.com/sites/Portfolio.
+[2026-03-11 23:03:18] [INFO] CSV report written: C:\Users\Owner\AppData\Local\Temp\Site Report for Portfolio - 2026-03-11.csv
+[2026-03-11 23:03:18] [INFO] Connecting to site: https://groovepoint.sharepoint.com/sites/Portfolio
+[2026-03-11 23:03:19] [ERROR] Failed to update catalog item ID . No -Identity has been provided specifying the item to update
+[2026-03-11 23:03:19] [INFO] --- Processing site 2 of 4: https://groovepoint.sharepoint.com/sites/ET4SP ---
+[2026-03-11 23:03:19] [INFO] Connecting to site: https://groovepoint.sharepoint.com/sites/ET4SP
+[2026-03-11 23:03:20] [INFO] Skipping 'DFFS_License' (List does not exist but records remain in 'SPJS-DynamicFormsForSharePoint').
+[2026-03-11 23:03:21] [INFO] Skipping 'etdev' (List does not exist but records remain in 'SPJS-DynamicFormsForSharePoint').
+[2026-03-11 23:03:22] [WARN] Target list 'E' not found on https://groovepoint.sharepoint.com/sites/ET4SP. Cleaning up.
+[2026-03-11 23:03:22] [INFO] Skipping 'E' (List does not exist but records remain in 'DFFSConfigurationList').
+[2026-03-11 23:03:22] [INFO] No DFFS-configured lists found on https://groovepoint.sharepoint.com/sites/ET4SP. Skipping report.
+[2026-03-11 23:03:22] [INFO] --- Processing site 3 of 4: https://groovepoint.sharepoint.com/sites/MESMTestbed ---
+[2026-03-11 23:03:22] [INFO] Connecting to site: https://groovepoint.sharepoint.com/sites/MESMTestbed
+[2026-03-11 23:03:23] [WARN] Target list 'D' not found on https://groovepoint.sharepoint.com/sites/MESMTestbed. Cleaning up.
+[2026-03-11 23:03:23] [INFO] Skipping 'D' (List does not exist but records remain in 'SPJS-DynamicFormsForSharePoint').
+[2026-03-11 23:03:24] [WARN] Target list 'M' not found on https://groovepoint.sharepoint.com/sites/MESMTestbed. Cleaning up.
+[2026-03-11 23:03:24] [INFO] Skipping 'M' (List does not exist but records remain in 'DFFSConfigurationList').
+[2026-03-11 23:03:24] [INFO] No DFFS-configured lists found on https://groovepoint.sharepoint.com/sites/MESMTestbed. Skipping report.
+[2026-03-11 23:03:24] [INFO] --- Processing site 4 of 4: https://groovepoint.sharepoint.com/ ---
+[2026-03-11 23:03:24] [INFO] Connecting to site: https://groovepoint.sharepoint.com/
+[2026-03-11 23:03:24] [INFO] List 'SPJS-DynamicFormsForSharePoint' not found on https://groovepoint.sharepoint.com/.
+[2026-03-11 23:03:24] [INFO] List 'DFFSConfigurationList' not found on https://groovepoint.sharepoint.com/.
+[2026-03-11 23:03:24] [INFO] No DFFS-configured lists found on https://groovepoint.sharepoint.com/. Skipping report.
+[2026-03-11 23:03:24] [INFO] Script completed. Log written to: SiteReview_Log_11Mar2026.txt
