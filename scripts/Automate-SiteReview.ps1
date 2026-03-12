@@ -419,8 +419,10 @@ function Export-SiteReportToCSV {
         [string]$siteName,
         [System.Collections.Generic.List[PSObject]]$reportRows
     )
-    $todayStr   = Get-Date -Format "yyyy-MM-dd"
-    $fileName   = "Site Report for $siteName - $todayStr.csv"
+    # Remove spaces and non-alphanumeric chars from SiteName for cleaner filenames
+    $cleanSiteName = $siteName -replace '[^a-zA-Z0-9]', ''
+    $todayStr   = Get-Date -Format "yyyyMMdd"
+    $fileName   = "SiteReport_${cleanSiteName}_${todayStr}.csv"
     $tempPath   = Join-Path $env:TEMP $fileName
     $sortedRows = $reportRows | Sort-Object "DFFS Version", "List Display Name"
 
@@ -480,7 +482,9 @@ function Update-TAPCatalog {
         }
     } else {
         try {
+            $siteNameForTitle = Get-SiteNameFromUrl -siteUrl $siteUrl
             $newItem = Add-PnPListItem -List $catalogListName -Values @{
+                "Title"                     = $siteNameForTitle
                 $CATALOG_SITE_URL_FIELD     = $siteUrl
                 $CATALOG_DATE_ADDED_FIELD   = $today
                 $CATALOG_LAST_UPDATED_FIELD = $today
@@ -507,7 +511,8 @@ function Update-TAPCatalog {
             $absoluteUrl = $portfolioRoot + $uploadedFile.ServerRelativeUrl
             
             # Form SharePoint Hyperlink field value (URL, Description)
-            $linkValue = "$absoluteUrl, View Site Report ($todayStr)"
+            # Append ?web=1 to ensure the file opens in the browser instead of forcing a download
+            $linkValue = "$absoluteUrl?web=1, View Site Report ($today)"
 
             Set-PnPListItem -List $catalogListName -Identity $catalogItemId -Values @{
                 $CATALOG_LAST_REPORT_DATE = $today
