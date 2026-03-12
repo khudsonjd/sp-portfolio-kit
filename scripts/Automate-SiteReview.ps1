@@ -17,7 +17,7 @@ param(
     [string]$InventoryUrlField      = "SiteURL",
     [string]$CatalogUrl             = "https://groovepoint.sharepoint.com/sites/Portfolio/Lists/TAPCatalog",
     [string]$ClientId               = "3dac4cee-ad25-4e62-a904-60d2cbc36c9b",
-    [string]$LogFileName            = "SiteReview_Log_$(Get-Date -Format 'ddMMMyyyy').txt"
+    [string]$LogFileName            = "SiteReview_Log_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
 )
 #endregion Parameters *#
 
