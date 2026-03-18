@@ -25,6 +25,9 @@ Built around four core ideas:
 **No required columns in SharePoint lists.** None of the lists created by scripts in this project mark any columns as required at the list level. Required field enforcement is handled through mDFFS form configuration, not the SharePoint list schema. This keeps the list flexible and avoids validation conflicts during scripted data operations.
 
 ---
+## Presentation Slide Decks
+## 📊 Presentation
+[View the SharePoint Custom Solution Catalog slide deck](https://htmlpreview.github.io/?https://github.com/khudsonjd/sp-portfolio-kit/blob/main/catalog-presentation.html)
 
 ## Installation
 
