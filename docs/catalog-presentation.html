@@ -1,373 +1,160 @@
-import { useState } from "react";
-
-const BRAND_COLOR = "#1B3A6B";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SharePoint Custom Solution Catalog – Slide Deck</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a2e; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const BRAND = "#1B3A6B";
 const ACCENT = "#4A90D9";
-const LIGHT_BG = "#F4F7FB";
+const LIGHT = "#F4F7FB";
 
 const slides = [
   { type: "title" },
-  {
-    type: "large",
-    heading: "Situation",
-    body: [
-      "SharePoint is a rapid development platform available to everyone in the enterprise."
-    ]
-  },
-  {
-    type: "large",
-    heading: "Complication",
-    body: [
-      "SharePoint solutions are often built to meet urgent, unfunded, or \u201ctemporary\u201d needs \u2014 with plans to sunset them in a few months or rebuild them properly once funding arrives.",
-      "Years later, those tools are still running. Your support team is maintaining dozens or hundreds of custom solutions of uncertain value, with no systematic way to evaluate them."
-    ]
-  },
-  {
-    type: "large",
-    heading: "Resolution",
-    body: [
-      "Learn to think like an Enterprise Architect. Apply TOGAF principles to create a standardized, repeatable process for regularly reviewing your solution portfolio \u2014 informed by relevant organizational and technical context.",
-      "Create an automated SharePoint Solution Portfolio Catalog, as explained at https://github.com/khudsonjd/sp-portfolio-kit"
-    ],
-    linkInLast: true
-  },
-  {
-    type: "large",
-    heading: "Resolution",
-    body: [
-      "Prototype demo: TAP Catalog"
-    ],
-    demoSlide: true
-  },
+  { type: "large", heading: "Situation", body: ["SharePoint is a rapid development platform available to everyone in the enterprise."] },
+  { type: "large", heading: "Complication", body: [
+    "SharePoint solutions are often built to meet urgent, unfunded, or \u201ctemporary\u201d needs \u2014 with plans to sunset them in a few months or rebuild them properly once funding arrives.",
+    "Years later, those tools are still running. Your support team is maintaining dozens or hundreds of custom solutions of uncertain value, with no systematic way to evaluate them."
+  ]},
+  { type: "large", heading: "Resolution", body: [
+    "Learn to think like an Enterprise Architect. Apply TOGAF principles to create a standardized, repeatable process for regularly reviewing your solution portfolio \u2014 informed by relevant organizational and technical context.",
+    "Create an automated SharePoint Solution Portfolio Catalog, as explained at https://github.com/khudsonjd/sp-portfolio-kit"
+  ], linkInLast: true },
+  { type: "large", heading: "Resolution", body: ["Prototype demo: TAP Catalog"], demoSlide: true },
   { type: "thankyou" }
 ];
 
-const BrandMark = () => (
-  <div style={{
-    position: "absolute",
-    bottom: 18,
-    right: 28,
-    display: "flex",
-    alignItems: "center",
-    gap: 7,
-    opacity: 0.85
-  }}>
-    <div style={{
-      width: 22,
-      height: 22,
-      background: ACCENT,
-      borderRadius: 4,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
-    }}>
-      <span style={{ color: "#fff", fontWeight: 900, fontSize: 12, fontFamily: "Georgia, serif" }}>M</span>
+const BrandMark = ({ light }) => (
+  <div style={{ position:"absolute", bottom:18, right:28, display:"flex", alignItems:"center", gap:7, opacity:0.9 }}>
+    <div style={{ width:22, height:22, background:ACCENT, borderRadius:4, display:"flex", alignItems:"center", justifyContent:"center" }}>
+      <span style={{ color:"#fff", fontWeight:900, fontSize:12, fontFamily:"Georgia,serif" }}>M</span>
     </div>
-    <span style={{
-      fontSize: 11,
-      fontWeight: 700,
-      color: BRAND_COLOR,
-      letterSpacing: "0.04em",
-      fontFamily: "Segoe UI, Arial, sans-serif"
-    }}>MDFFS Foundation</span>
+    <span style={{ fontSize:11, fontWeight:700, color: light ? "rgba(255,255,255,0.8)" : BRAND, letterSpacing:"0.04em" }}>MDFFS Foundation</span>
   </div>
 );
 
-const SlideFrame = ({ children, bg }) => (
-  <div style={{
-    width: "100%",
-    aspectRatio: "16/9",
-    background: bg || "#fff",
-    borderRadius: 10,
-    boxShadow: "0 4px 32px rgba(27,58,107,0.13)",
-    position: "relative",
-    overflow: "hidden",
-    display: "flex",
-    flexDirection: "column",
-    userSelect: "none"
-  }}>
-    {/* Top accent bar */}
-    <div style={{ height: 6, background: `linear-gradient(90deg, ${BRAND_COLOR} 60%, ${ACCENT} 100%)`, flexShrink: 0 }} />
+const Frame = ({ bg, children }) => (
+  <div style={{ width:"100%", aspectRatio:"16/9", background: bg||"#fff", borderRadius:10, boxShadow:"0 4px 32px rgba(27,58,107,0.18)", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column" }}>
+    <div style={{ height:6, background:`linear-gradient(90deg,${BRAND} 60%,${ACCENT} 100%)`, flexShrink:0 }} />
     {children}
-    <BrandMark />
   </div>
 );
 
 const TitleSlide = () => (
-  <SlideFrame bg={BRAND_COLOR}>
-    <div style={{
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "0 8%"
-    }}>
-      <div style={{
-        width: 60,
-        height: 4,
-        background: ACCENT,
-        borderRadius: 2,
-        marginBottom: 28
-      }} />
-      <h1 style={{
-        color: "#fff",
-        fontFamily: "Segoe UI, Arial, sans-serif",
-        fontSize: "clamp(2rem, 5vw, 3.8rem)",
-        fontWeight: 700,
-        textAlign: "center",
-        letterSpacing: "-0.01em",
-        lineHeight: 1.15,
-        margin: 0
-      }}>
+  <Frame bg={BRAND}>
+    <div style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"0 8%" }}>
+      <div style={{ width:60, height:4, background:ACCENT, borderRadius:2, marginBottom:28 }} />
+      <h1 style={{ color:"#fff", fontSize:"clamp(2rem,5vw,3.8rem)", fontWeight:700, textAlign:"center", lineHeight:1.15, letterSpacing:"-0.01em" }}>
         SharePoint Custom<br />Solution Catalog
       </h1>
-      <div style={{
-        width: 60,
-        height: 4,
-        background: ACCENT,
-        borderRadius: 2,
-        marginTop: 28
-      }} />
+      <div style={{ width:60, height:4, background:ACCENT, borderRadius:2, marginTop:28 }} />
     </div>
-    {/* Override brandmark color for dark bg */}
-    <div style={{
-      position: "absolute",
-      bottom: 18,
-      right: 28,
-      display: "flex",
-      alignItems: "center",
-      gap: 7
-    }}>
-      <div style={{
-        width: 22,
-        height: 22,
-        background: ACCENT,
-        borderRadius: 4,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      }}>
-        <span style={{ color: "#fff", fontWeight: 900, fontSize: 12, fontFamily: "Georgia, serif" }}>M</span>
-      </div>
-      <span style={{
-        fontSize: 11,
-        fontWeight: 700,
-        color: "rgba(255,255,255,0.8)",
-        letterSpacing: "0.04em",
-        fontFamily: "Segoe UI, Arial, sans-serif"
-      }}>MDFFS Foundation</span>
-    </div>
-  </SlideFrame>
+    <BrandMark light />
+  </Frame>
 );
 
 const LargeSlide = ({ heading, body, linkInLast, demoSlide }) => (
-  <SlideFrame bg={LIGHT_BG}>
-    <div style={{
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      padding: "5% 8% 8% 8%"
-    }}>
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 14,
-        marginBottom: 24
-      }}>
-        <div style={{ width: 5, height: 44, background: ACCENT, borderRadius: 3, flexShrink: 0 }} />
-        <h2 style={{
-          color: BRAND_COLOR,
-          fontFamily: "Segoe UI, Arial, sans-serif",
-          fontSize: "clamp(1.3rem, 3vw, 2.1rem)",
-          fontWeight: 700,
-          margin: 0,
-          letterSpacing: "-0.01em"
-        }}>{heading}</h2>
+  <Frame bg={LIGHT}>
+    <div style={{ flex:1, display:"flex", flexDirection:"column", justifyContent:"center", padding:"5% 8% 8% 8%" }}>
+      <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:24 }}>
+        <div style={{ width:5, height:44, background:ACCENT, borderRadius:3, flexShrink:0 }} />
+        <h2 style={{ color:BRAND, fontSize:"clamp(1.3rem,3vw,2.1rem)", fontWeight:700, letterSpacing:"-0.01em" }}>{heading}</h2>
       </div>
-      <div style={{ paddingLeft: 19 }}>
+      <div style={{ paddingLeft:19 }}>
         {body.map((para, i) => {
           const isLast = i === body.length - 1;
-          const isLink = linkInLast && isLast;
-          const isDemoLine = demoSlide;
-          if (isLink) {
-            const parts = para.split("https://github.com/khudsonjd/sp-portfolio-kit");
+          if (linkInLast && isLast) {
+            const url = "https://github.com/khudsonjd/sp-portfolio-kit";
+            const parts = para.split(url);
             return (
-              <p key={i} style={{
-                fontFamily: "Segoe UI, Arial, sans-serif",
-                fontSize: "clamp(0.85rem, 1.8vw, 1.15rem)",
-                color: "#2a2a2a",
-                lineHeight: 1.65,
-                marginTop: i > 0 ? 16 : 0,
-                marginBottom: 0
-              }}>
-                {parts[0]}
-                <a href="https://github.com/khudsonjd/sp-portfolio-kit" target="_blank" rel="noopener noreferrer"
-                  style={{ color: ACCENT, fontWeight: 600, textDecoration: "underline", wordBreak: "break-all" }}>
-                  https://github.com/khudsonjd/sp-portfolio-kit
-                </a>
-                {parts[1]}
+              <p key={i} style={{ fontSize:"clamp(0.85rem,1.8vw,1.15rem)", color:"#2a2a2a", lineHeight:1.65, marginTop: i>0?16:0 }}>
+                {parts[0]}<a href={url} target="_blank" rel="noopener noreferrer" style={{ color:ACCENT, fontWeight:600, textDecoration:"underline", wordBreak:"break-all" }}>{url}</a>{parts[1]}
               </p>
             );
           }
           return (
             <p key={i} style={{
-              fontFamily: "Segoe UI, Arial, sans-serif",
-              fontSize: isDemoLine
-                ? "clamp(1.1rem, 2.8vw, 2rem)"
-                : "clamp(0.85rem, 1.8vw, 1.15rem)",
-              fontWeight: isDemoLine ? 600 : 400,
-              color: isDemoLine ? BRAND_COLOR : "#2a2a2a",
-              lineHeight: 1.65,
-              marginTop: i > 0 ? 16 : 0,
-              marginBottom: 0
-            }}>
-              {para}
-            </p>
+              fontSize: demoSlide ? "clamp(1.8rem,4.5vw,3.2rem)" : "clamp(0.85rem,1.8vw,1.15rem)",
+              fontWeight: demoSlide ? 600 : 400,
+              color: demoSlide ? BRAND : "#2a2a2a",
+              lineHeight:1.65, marginTop: i>0?16:0
+            }}>{para}</p>
           );
         })}
       </div>
     </div>
-  </SlideFrame>
+    <BrandMark />
+  </Frame>
 );
 
 const ThankYouSlide = () => (
-  <SlideFrame bg="#fff">
-    <div style={{
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "5% 8%"
-    }}>
-      <h2 style={{
-        color: BRAND_COLOR,
-        fontFamily: "Segoe UI, Arial, sans-serif",
-        fontSize: "clamp(2.2rem, 5.5vw, 4rem)",
-        fontWeight: 700,
-        margin: "0 0 20px 0",
-        letterSpacing: "-0.02em"
-      }}>Thank You</h2>
-      <div style={{ width: 50, height: 3, background: ACCENT, borderRadius: 2, marginBottom: 28 }} />
-      <div style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 6
-      }}>
-        <span style={{ fontFamily: "Segoe UI, Arial, sans-serif", fontSize: "clamp(1.2rem, 2.4vw, 1.8rem)", fontWeight: 700, color: BRAND_COLOR }}>Keith Hudson</span>
-        <span style={{ fontFamily: "Segoe UI, Arial, sans-serif", fontSize: "clamp(1rem, 2vw, 1.4rem)", color: "#555" }}>Founder, MDFFS Foundation</span>
-        <a href="mailto:khudsonjd@gmail.com" style={{ fontFamily: "Segoe UI, Arial, sans-serif", fontSize: "clamp(1rem, 2vw, 1.4rem)", color: ACCENT, textDecoration: "none", fontWeight: 600 }}>
-          khudsonjd@gmail.com
-        </a>
+  <Frame bg="#fff">
+    <div style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"5% 8%" }}>
+      <h2 style={{ color:BRAND, fontSize:"clamp(2.2rem,5.5vw,4rem)", fontWeight:700, letterSpacing:"-0.02em", marginBottom:20 }}>Thank You</h2>
+      <div style={{ width:50, height:3, background:ACCENT, borderRadius:2, marginBottom:28 }} />
+      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:6 }}>
+        <span style={{ fontSize:"clamp(1.2rem,2.4vw,1.8rem)", fontWeight:700, color:BRAND }}>Keith Hudson</span>
+        <span style={{ fontSize:"clamp(1rem,2vw,1.4rem)", color:"#555" }}>Founder, MDFFS Foundation</span>
+        <a href="mailto:khudsonjd@gmail.com" style={{ fontSize:"clamp(1rem,2vw,1.4rem)", color:ACCENT, textDecoration:"none", fontWeight:600 }}>khudsonjd@gmail.com</a>
       </div>
     </div>
-    {/* Copyright */}
-    <div style={{
-      position: "absolute",
-      bottom: 18,
-      left: 28,
-      fontSize: 10,
-      color: "#999",
-      fontFamily: "Segoe UI, Arial, sans-serif"
-    }}>© 2026 MDFFS Foundation. All rights reserved.</div>
-  </SlideFrame>
+    <div style={{ position:"absolute", bottom:18, left:28, fontSize:10, color:"#999" }}>© 2026 MDFFS Foundation. All rights reserved.</div>
+    <BrandMark />
+  </Frame>
 );
 
-const renderSlide = (slide) => {
-  if (slide.type === "title") return <TitleSlide />;
-  if (slide.type === "large") return <LargeSlide {...slide} />;
-  if (slide.type === "thankyou") return <ThankYouSlide />;
-  return null;
+const render = s => {
+  if (s.type === "title") return <TitleSlide />;
+  if (s.type === "large") return <LargeSlide {...s} />;
+  if (s.type === "thankyou") return <ThankYouSlide />;
 };
 
-export default function Presentation() {
-  const [current, setCurrent] = useState(0);
+function App() {
+  const [cur, setCur] = React.useState(0);
   const total = slides.length;
+  React.useEffect(() => {
+    const onKey = e => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") setCur(c => Math.min(total-1, c+1));
+      if (e.key === "ArrowLeft"  || e.key === "ArrowUp")   setCur(c => Math.max(0, c-1));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "#1a1a2e",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "24px 16px"
-    }}>
-      {/* Slide */}
-      <div style={{ width: "100%", maxWidth: 860 }}>
-        {renderSlide(slides[current])}
-      </div>
-
-      {/* Controls */}
-      <div style={{
-        marginTop: 20,
-        display: "flex",
-        alignItems: "center",
-        gap: 20
-      }}>
-        <button
-          onClick={() => setCurrent(c => Math.max(0, c - 1))}
-          disabled={current === 0}
-          style={{
-            background: current === 0 ? "rgba(255,255,255,0.1)" : ACCENT,
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            padding: "8px 22px",
-            fontFamily: "Segoe UI, Arial, sans-serif",
-            fontWeight: 600,
-            fontSize: 14,
-            cursor: current === 0 ? "not-allowed" : "pointer",
-            opacity: current === 0 ? 0.4 : 1,
-            transition: "background 0.2s"
-          }}
-        >← Prev</button>
-
-        <span style={{
-          color: "rgba(255,255,255,0.6)",
-          fontFamily: "Segoe UI, Arial, sans-serif",
-          fontSize: 13
-        }}>{current + 1} / {total}</span>
-
-        {/* Dot nav */}
-        <div style={{ display: "flex", gap: 6 }}>
-          {slides.map((_, i) => (
-            <div
-              key={i}
-              onClick={() => setCurrent(i)}
-              style={{
-                width: i === current ? 20 : 8,
-                height: 8,
-                borderRadius: 4,
-                background: i === current ? ACCENT : "rgba(255,255,255,0.25)",
-                cursor: "pointer",
-                transition: "all 0.2s"
-              }}
-            />
+    <div style={{ width:"100%", maxWidth:860, display:"flex", flexDirection:"column", alignItems:"center", gap:20 }}>
+      <div style={{ width:"100%" }}>{render(slides[cur])}</div>
+      <div style={{ display:"flex", alignItems:"center", gap:20 }}>
+        <button onClick={() => setCur(c => Math.max(0,c-1))} disabled={cur===0}
+          style={{ background: cur===0?"rgba(255,255,255,0.1)":ACCENT, color:"#fff", border:"none", borderRadius:6, padding:"8px 22px", fontWeight:600, fontSize:14, cursor: cur===0?"not-allowed":"pointer", opacity: cur===0?0.4:1 }}>
+          ← Prev
+        </button>
+        <div style={{ display:"flex", gap:6 }}>
+          {slides.map((_,i) => (
+            <div key={i} onClick={() => setCur(i)} style={{ width: i===cur?20:8, height:8, borderRadius:4, background: i===cur?ACCENT:"rgba(255,255,255,0.25)", cursor:"pointer", transition:"all 0.2s" }} />
           ))}
         </div>
-
-        <button
-          onClick={() => setCurrent(c => Math.min(total - 1, c + 1))}
-          disabled={current === total - 1}
-          style={{
-            background: current === total - 1 ? "rgba(255,255,255,0.1)" : ACCENT,
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            padding: "8px 22px",
-            fontFamily: "Segoe UI, Arial, sans-serif",
-            fontWeight: 600,
-            fontSize: 14,
-            cursor: current === total - 1 ? "not-allowed" : "pointer",
-            opacity: current === total - 1 ? 0.4 : 1,
-            transition: "background 0.2s"
-          }}
-        >Next →</button>
+        <button onClick={() => setCur(c => Math.min(total-1,c+1))} disabled={cur===total-1}
+          style={{ background: cur===total-1?"rgba(255,255,255,0.1)":ACCENT, color:"#fff", border:"none", borderRadius:6, padding:"8px 22px", fontWeight:600, fontSize:14, cursor: cur===total-1?"not-allowed":"pointer", opacity: cur===total-1?0.4:1 }}>
+          Next →
+        </button>
       </div>
+      <div style={{ color:"rgba(255,255,255,0.3)", fontSize:12 }}>{cur+1} / {total} &nbsp;·&nbsp; arrow keys also work</div>
     </div>
   );
 }
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
