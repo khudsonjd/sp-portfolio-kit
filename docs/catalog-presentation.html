@@ -44,7 +44,7 @@ const BrandMark = ({ light }) => (
 );
 
 const Frame = ({ bg, children }) => (
-  <div style={{ width:"100%", aspectRatio:"16/9", background: bg||"#fff", borderRadius:10, boxShadow:"0 4px 32px rgba(27,58,107,0.18)", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column" }}>
+  <div style={{ width:"100%", aspectRatio:"16/9", background:bg||"#fff", borderRadius:10, boxShadow:"0 4px 32px rgba(27,58,107,0.18)", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column" }}>
     <div style={{ height:6, background:`linear-gradient(90deg,${BRAND} 60%,${ACCENT} 100%)`, flexShrink:0 }} />
     {children}
   </div>
@@ -77,7 +77,7 @@ const LargeSlide = ({ heading, body, linkInLast, demoSlide }) => (
             const url = "https://github.com/khudsonjd/sp-portfolio-kit";
             const parts = para.split(url);
             return (
-              <p key={i} style={{ fontSize:"clamp(0.85rem,1.8vw,1.15rem)", color:"#2a2a2a", lineHeight:1.65, marginTop: i>0?16:0 }}>
+              <p key={i} style={{ fontSize:"clamp(0.85rem,1.8vw,1.15rem)", color:"#2a2a2a", lineHeight:1.65, marginTop:i>0?16:0 }}>
                 {parts[0]}<a href={url} target="_blank" rel="noopener noreferrer" style={{ color:ACCENT, fontWeight:600, textDecoration:"underline", wordBreak:"break-all" }}>{url}</a>{parts[1]}
               </p>
             );
@@ -87,7 +87,7 @@ const LargeSlide = ({ heading, body, linkInLast, demoSlide }) => (
               fontSize: demoSlide ? "clamp(1.8rem,4.5vw,3.2rem)" : "clamp(0.85rem,1.8vw,1.15rem)",
               fontWeight: demoSlide ? 600 : 400,
               color: demoSlide ? BRAND : "#2a2a2a",
-              lineHeight:1.65, marginTop: i>0?16:0
+              lineHeight:1.65, marginTop:i>0?16:0
             }}>{para}</p>
           );
         })}
@@ -136,20 +136,20 @@ function App() {
       <div style={{ width:"100%" }}>{render(slides[cur])}</div>
       <div style={{ display:"flex", alignItems:"center", gap:20 }}>
         <button onClick={() => setCur(c => Math.max(0,c-1))} disabled={cur===0}
-          style={{ background: cur===0?"rgba(255,255,255,0.1)":ACCENT, color:"#fff", border:"none", borderRadius:6, padding:"8px 22px", fontWeight:600, fontSize:14, cursor: cur===0?"not-allowed":"pointer", opacity: cur===0?0.4:1 }}>
+          style={{ background:cur===0?"rgba(255,255,255,0.1)":ACCENT, color:"#fff", border:"none", borderRadius:6, padding:"8px 22px", fontWeight:600, fontSize:14, cursor:cur===0?"not-allowed":"pointer", opacity:cur===0?0.4:1 }}>
           ← Prev
         </button>
         <div style={{ display:"flex", gap:6 }}>
           {slides.map((_,i) => (
-            <div key={i} onClick={() => setCur(i)} style={{ width: i===cur?20:8, height:8, borderRadius:4, background: i===cur?ACCENT:"rgba(255,255,255,0.25)", cursor:"pointer", transition:"all 0.2s" }} />
+            <div key={i} onClick={() => setCur(i)} style={{ width:i===cur?20:8, height:8, borderRadius:4, background:i===cur?ACCENT:"rgba(255,255,255,0.25)", cursor:"pointer", transition:"all 0.2s" }} />
           ))}
         </div>
         <button onClick={() => setCur(c => Math.min(total-1,c+1))} disabled={cur===total-1}
-          style={{ background: cur===total-1?"rgba(255,255,255,0.1)":ACCENT, color:"#fff", border:"none", borderRadius:6, padding:"8px 22px", fontWeight:600, fontSize:14, cursor: cur===total-1?"not-allowed":"pointer", opacity: cur===total-1?0.4:1 }}>
+          style={{ background:cur===total-1?"rgba(255,255,255,0.1)":ACCENT, color:"#fff", border:"none", borderRadius:6, padding:"8px 22px", fontWeight:600, fontSize:14, cursor:cur===total-1?"not-allowed":"pointer", opacity:cur===total-1?0.4:1 }}>
           Next →
         </button>
       </div>
-      <div style={{ color:"rgba(255,255,255,0.3)", fontSize:12 }}>{cur+1} / {total} &nbsp;·&nbsp; arrow keys also work</div>
+      <div style={{ color:"rgba(255,255,255,0.3)", fontSize:12 }}>{cur+1} / {total} · arrow keys also work</div>
     </div>
   );
 }
