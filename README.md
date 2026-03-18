@@ -27,7 +27,7 @@ Built around four core ideas:
 ---
 ## Presentation Slide Decks
 ## 📊 Presentation
-[View the SharePoint Custom Solution Catalog slide deck](https://htmlpreview.github.io/?https://github.com/khudsonjd/sp-portfolio-kit/blob/main/catalog-presentation.html)
+[View the SharePoint Custom Solution Catalog slide deck](https://htmlpreview.github.io/?https://github.com/khudsonjd/sp-portfolio-kit/blob/main/docs/catalog-presentation.html)
 
 ## Installation
 
