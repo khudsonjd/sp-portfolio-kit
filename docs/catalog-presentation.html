@@ -113,7 +113,7 @@ const ThankYouSlide = () => (
   </Frame>
 );
 
-const render = s => {
+const renderslide = s => {
   if (s.type === "title") return <TitleSlide />;
   if (s.type === "large") return <LargeSlide {...s} />;
   if (s.type === "thankyou") return <ThankYouSlide />;
@@ -133,7 +133,7 @@ function App() {
 
   return (
     <div style={{ width:"100%", maxWidth:860, display:"flex", flexDirection:"column", alignItems:"center", gap:20 }}>
-      <div style={{ width:"100%" }}>{render(slides[cur])}</div>
+      <div style={{ width:"100%" }}>{renderslide(slides[cur])}</div>
       <div style={{ display:"flex", alignItems:"center", gap:20 }}>
         <button onClick={() => setCur(c => Math.max(0,c-1))} disabled={cur===0}
           style={{ background:cur===0?"rgba(255,255,255,0.1)":ACCENT, color:"#fff", border:"none", borderRadius:6, padding:"8px 22px", fontWeight:600, fontSize:14, cursor:cur===0?"not-allowed":"pointer", opacity:cur===0?0.4:1 }}>
@@ -154,7 +154,7 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+ReactDOM.createRoot(document.getElementById("root")).renderslide(<App />);
 </script>
 </body>
 </html>
