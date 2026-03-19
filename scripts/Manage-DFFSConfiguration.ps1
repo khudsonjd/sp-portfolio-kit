@@ -26,8 +26,7 @@ Write-Host "========================================`n" -ForegroundColor Cyan
 
 $listName       = 'DFFSConfigurationList'
 $defaultSiteUrl = 'https://groovepoint.sharepoint.com/sites/Portfolio/'
-$clientId       = '3dac4cee-ad25-4e62-a904-60d2cbc36c9b'
-
+$clientId       = 'xxxxxx'
 #endregion Configuration *#
 
 #region Module Check *#
