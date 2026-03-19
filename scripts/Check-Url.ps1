@@ -1,5 +1,5 @@
 $siteUrl='https://groovepoint.sharepoint.com/sites/Portfolio/'
-Connect-PnPOnline -Url $siteUrl -Interactive -ClientId '3dac4cee-ad25-4e62-a904-60d2cbc36c9b' -WarningAction SilentlyContinue
+Connect-PnPOnline -Url $siteUrl -Interactive -ClientId 'xxxxxx' -WarningAction SilentlyContinue
 
 $linkValue = "=1, View Site Report"
 
