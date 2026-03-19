@@ -41,7 +41,7 @@ $siteUrl = if ($inputUrl.Trim() -eq "") { $defaultUrl } else { $inputUrl.Trim() 
 Write-Host "`nConnecting to: $siteUrl" -ForegroundColor Cyan
 
 $env:PNPPOWERSHELL_UPDATECHECK = "Off"
-$clientId = "3dac4cee-ad25-4e62-a904-60d2cbc36c9b"
+$clientId = "xxxxxx"
 
 try {
     Connect-PnPOnline -Url $siteUrl -Interactive -ClientId $clientId -WarningAction SilentlyContinue
