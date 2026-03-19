@@ -4,7 +4,7 @@
 $siteUrl  = "https://groovepoint.sharepoint.com/sites/Portfolio"
 $listName = "MasterSharePointInventory"
 $tenant   = "groovepoint.onmicrosoft.com"
-$clientId = "b5f5a994-c6ce-4f72-b9fe-9d309bd0cb40"
+$clientId = "xxxxxx"
 
 # --- Load PnP 1.x ---
 $pnpV1 = Get-Module -ListAvailable -Name "PnP.PowerShell" |
