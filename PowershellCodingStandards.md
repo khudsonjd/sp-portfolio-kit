@@ -263,7 +263,26 @@ Recommended starting structure:
 
 ------------------------------------------------------------------------
 
-## 10. Key Principles
+## 10. SharePoint / PnP Authentication Standard
+
+All scripts connecting to SharePoint Online must use the following:
+
+-   **Module:** `PnP.PowerShell` version `1.12.0`
+-   **Shell:** PowerShell 5.1
+-   **Connection method:** `-UseWebLogin` (not `-Interactive`, not `-DeviceLogin`)
+
+`-UseWebLogin` opens an embedded browser control within the PowerShell session, which correctly handles modern auth (MFA, SSO) without requiring a separate browser window or device code flow. It only works with PnP.PowerShell 1.x on PowerShell 5.1.
+
+```powershell
+Connect-PnPOnline -Url $siteUrl -UseWebLogin -WarningAction SilentlyContinue
+```
+
+> Do NOT use `-Interactive` (fails in scripted/Claude Code sessions — browser window does not surface).
+> Do NOT use `-DeviceLogin` unless explicitly building a headless/server scenario.
+
+------------------------------------------------------------------------
+
+## 11. Key Principles
 
 -   Organize scripts so sections collapse cleanly in editors.
 -   Maintain consistent region naming.
