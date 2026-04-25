@@ -263,7 +263,40 @@ Recommended starting structure:
 
 ------------------------------------------------------------------------
 
-## 10. Key Principles
+## 10. SharePoint / PnP Authentication Standard
+
+All scripts connecting to SharePoint Online must use the following:
+
+-   **Module:** `PnP.PowerShell` version `1.12.0`
+-   **Shell:** PowerShell 5.1
+-   **Connection method:** `-UseWebLogin` (not `-Interactive`, not `-DeviceLogin`)
+
+`-UseWebLogin` opens an embedded browser control within the PowerShell session, which correctly handles modern auth (MFA, SSO) without requiring a separate browser window or device code flow. It only works with PnP.PowerShell 1.x on PowerShell 5.1.
+
+```powershell
+Connect-PnPOnline -Url $siteUrl -UseWebLogin -WarningAction SilentlyContinue
+```
+
+> Do NOT use `-Interactive` (fails in scripted/Claude Code sessions — browser window does not surface).
+> Do NOT use `-DeviceLogin` unless explicitly building a headless/server scenario.
+
+------------------------------------------------------------------------
+
+## 11. ASCII-Only Characters in Script Files
+
+All PowerShell script files must use **ASCII characters only**. Never use Unicode characters, including:
+
+-   Smart/curly quotes (`"` `"` `'` `'`) — use straight quotes (`"` `'`) only
+-   Em dash (`—`) or en dash (`–`) — use hyphen (`-`)
+-   Any character outside the ASCII range (0–127)
+
+**Why:** PowerShell 5.1 does not treat Unicode quotation marks as string delimiters. A script saved with curly quotes will fail with `ExpressionsMustBeFirstInPipeline` parse errors that are difficult to diagnose. AI tools that write files (e.g. Claude Code Write tool) may silently encode straight quotes as Unicode curly quotes — always verify encoding when a script fails unexpectedly.
+
+**When writing scripts with AI tools:** If a script produces parse errors on string literals, suspect Unicode quote substitution. Fix by rewriting the affected strings in a plain-text editor or by having the AI rewrite using only single-quoted strings and `[char]` codes for special characters.
+
+------------------------------------------------------------------------
+
+## 12. Key Principles
 
 -   Organize scripts so sections collapse cleanly in editors.
 -   Maintain consistent region naming.
@@ -271,3 +304,4 @@ Recommended starting structure:
 -   Avoid nested exception logic.
 -   Prefer simple, readable iteration patterns.
 -   Structure scripts so future maintainers can quickly navigate them.
+-   Use ASCII characters only — never Unicode quotes, dashes, or symbols.
