@@ -296,7 +296,55 @@ All PowerShell script files must use **ASCII characters only**. Never use Unicod
 
 ------------------------------------------------------------------------
 
-## 12. Key Principles
+## 12. Module Prerequisite Checks
+
+PnP.PowerShell 1.12.0 is pre-installed in this environment. Do not include installation logic in provisioning scripts. The Module Check region must only import the module if it is not already loaded in the current session.
+
+**Correct pattern — import only, with MaximumVersion guard:**
+
+```powershell
+if (-not (Get-Module -Name PnP.PowerShell)) {
+    Import-Module PnP.PowerShell -MaximumVersion '1.99.99'
+}
+```
+
+**Why `-MaximumVersion '1.99.99'`:** There is a PnP.PowerShell 3.1.0 installed in the user Documents path that requires PS 7.4.6. Without a version constraint, `Import-Module PnP.PowerShell` on PS 5.1 picks up 3.1.0 and errors. `-MaximumVersion '1.99.99'` ensures the 1.12.0 build is selected.
+
+**Why not `-RequiredVersion 1.12.0`:** Causes `FileNotFoundException` in this environment even when 1.12.0 is installed. Do not use it.
+
+**Wrong — no version guard, may pick up incompatible version:**
+
+```powershell
+if (-not (Get-Module -Name PnP.PowerShell)) {
+    Import-Module PnP.PowerShell
+}
+```
+
+This pattern applies to any module where multiple versions are installed across PS 5.1 and PS 7 paths.
+
+------------------------------------------------------------------------
+
+## 13. SharePoint Field Naming Conventions
+
+Never use `Status` as a column internal name. SharePoint generic lists have a built-in hidden field also named `Status` — provisioning a custom field with the same internal name will fail or produce unexpected behavior.
+
+Use a context-specific internal name instead, with the display name set to "Status" via `Set-PnPField`:
+
+| List context | Use this internal name |
+|---|---|
+| Ticket / request | `RequestStatus` |
+| Approval workflow | `ApprovalStatus` |
+| Training / certification | `TrainingStatus` |
+| Onboarding checklist | `ChecklistStatus` |
+| Asset / inventory | `AssetStatus` |
+| Task | `TaskStatus` |
+| Checkout / loan | `CheckoutStatus` |
+
+The same caution applies to any other name that may conflict with SharePoint built-in fields (e.g. `Author`, `Editor`, `Created`, `Modified`, `ContentType`). Do not use built-in internal names for custom columns.
+
+------------------------------------------------------------------------
+
+## 14. Key Principles
 
 -   Organize scripts so sections collapse cleanly in editors.
 -   Maintain consistent region naming.
@@ -305,3 +353,5 @@ All PowerShell script files must use **ASCII characters only**. Never use Unicod
 -   Prefer simple, readable iteration patterns.
 -   Structure scripts so future maintainers can quickly navigate them.
 -   Use ASCII characters only — never Unicode quotes, dashes, or symbols.
+-   Check for the specific required module version before installing — never install blindly.
+-   Never use SharePoint built-in field names (Status, Author, Editor, Created, Modified) as custom column internal names.
